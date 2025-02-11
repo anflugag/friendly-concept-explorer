@@ -1,0 +1,15 @@
+
+{
+  "navigation": {
+    "home": "Главная",
+    "back": "Назад",
+    "search": "Поиск",
+    "forward": "Вперед",
+    "favorites": "Избранное"
+  },
+  "sections": {
+    "productLibrary": "Библиотека продуктов",
+    "distributorAssistance": "Помощь дистрибьютору",
+    "feedback": "Обратная связь"
+  }
+}

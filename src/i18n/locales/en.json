@@ -1,0 +1,15 @@
+
+{
+  "navigation": {
+    "home": "Home",
+    "back": "Back",
+    "search": "Search",
+    "forward": "Forward",
+    "favorites": "Favorites"
+  },
+  "sections": {
+    "productLibrary": "Product Library",
+    "distributorAssistance": "Distributor Assistance",
+    "feedback": "Feedback"
+  }
+}
