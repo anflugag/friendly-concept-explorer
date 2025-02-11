@@ -1,5 +1,6 @@
 
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import BottomNav from '../components/navigation/BottomNav';
 import LanguageSwitcher from '../components/language/LanguageSwitcher';
 import '../i18n/config';
@@ -13,14 +14,15 @@ const Index = () => {
       
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6 animate-fade-in">
-          <section 
+          <Link 
+            to="/category/nss"
             className="p-6 bg-white/80 backdrop-blur-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
             style={{
               background: 'linear-gradient(109.6deg, rgba(223,234,247,1) 11.2%, rgba(244,248,252,1) 91.1%)',
             }}
           >
             <h2 className="text-2xl font-bold mb-4 text-[#151120]">{t('sections.productLibrary')}</h2>
-          </section>
+          </Link>
 
           <section 
             className="p-6 bg-white/80 backdrop-blur-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
