@@ -11,5 +11,18 @@
     "productLibrary": "Библиотека продуктов",
     "distributorAssistance": "Помощь дистрибьютору",
     "feedback": "Обратная связь"
+  },
+  "categories": {
+    "nss": "Нейрохирургия",
+    "cardiosurgery": "Кардиохирургия",
+    "diabetes": "Диабет"
+  },
+  "businesses": {
+    "neuromodulation": "Нейромодуляция"
+  },
+  "therapies": {
+    "scs": "SCS",
+    "dbs": "DBS",
+    "tdd": "TDD"
   }
 }

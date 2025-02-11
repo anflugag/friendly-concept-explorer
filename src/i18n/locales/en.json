@@ -11,5 +11,18 @@
     "productLibrary": "Product Library",
     "distributorAssistance": "Distributor Assistance",
     "feedback": "Feedback"
+  },
+  "categories": {
+    "nss": "NSS",
+    "cardiosurgery": "Cardiosurgery",
+    "diabetes": "Diabetes"
+  },
+  "businesses": {
+    "neuromodulation": "Neuromodulation"
+  },
+  "therapies": {
+    "scs": "SCS",
+    "dbs": "DBS",
+    "tdd": "TDD"
   }
 }

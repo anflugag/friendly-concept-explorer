@@ -12,7 +12,7 @@ const LanguageSwitcher = () => {
   return (
     <button
       onClick={toggleLanguage}
-      className="fixed top-4 right-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+      className="fixed top-4 right-4 px-4 py-2 bg-white/80 backdrop-blur-lg text-[#151120] rounded-md hover:bg-white/90 transition-all duration-300 transform hover:scale-105 shadow-lg animate-fade-in"
     >
       {i18n.language === 'en' ? 'RU' : 'EN'}
     </button>
