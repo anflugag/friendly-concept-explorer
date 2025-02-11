@@ -24,5 +24,14 @@
     "scs": "SCS",
     "dbs": "DBS",
     "tdd": "TDD"
+  },
+  "fileCategories": {
+    "instructions": "Инструкции",
+    "registration": "Регистрационное удостоверение",
+    "photos": "Фотографии",
+    "videos": "Видео",
+    "specs": "Технические характеристики",
+    "training": "Обучение",
+    "components": "Компоненты"
   }
 }

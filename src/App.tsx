@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Categories from "./pages/Categories";
 import Business from "./pages/Business";
 import Therapy from "./pages/Therapy";
+import Product from "./pages/Product";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/category/:category" element={<Business />} />
           <Route path="/category/:category/business/:business" element={<Therapy />} />
+          <Route path="/category/:category/business/:business/therapy/:therapy" element={<Product />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
