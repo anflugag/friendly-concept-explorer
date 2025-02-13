@@ -9,18 +9,33 @@ const Categories = () => {
   const categories = [
     { 
       id: 'nss', 
-      description: 'Нейростимуляция и нейромодуляция',
-      tags: ['#нейрохирургия', '#SCS', '#DBS']
+      description: 'Нейрохирургические решения и технологии',
+      tags: ['#нейрохирургия', '#SCS', '#DBS', '#нейромодуляция'],
+      businesses: ['neuromodulation', 'spinalSurgery', 'neuroendoscopy', 'radiosurgery', 'peripheralStimulation', 'intrathecalTherapy']
     },
     { 
       id: 'cardiosurgery', 
-      description: 'Кардиохирургические решения',
-      tags: ['#кардиохирургия', '#стенты', '#клапаны']
+      description: 'Комплексные кардиохирургические решения',
+      tags: ['#кардиохирургия', '#кардиология', '#аритмология'],
+      businesses: ['cardiacSurgery', 'interventionalCardiology', 'electrophysiology', 'structuralHeart', 'vascularSurgery', 'cardiacMonitoring']
     },
     { 
       id: 'diabetes', 
       description: 'Инновационные решения для диабета',
-      tags: ['#диабет', '#инсулин', '#помпы']
+      tags: ['#диабет', '#инсулин', '#мониторинг'],
+      businesses: ['insulinPumps', 'glucoseMonitoring', 'diabetesManagement', 'insulinDelivery', 'diabetesEducation', 'metabolicSurgery']
+    },
+    {
+      id: 'orthopedics',
+      description: 'Современные ортопедические технологии',
+      tags: ['#ортопедия', '#эндопротезирование', '#травматология'],
+      businesses: ['jointReplacement', 'spineOrtho', 'traumaSurgery', 'sportsOrtho', 'pediatricOrtho', 'arthroscopy']
+    },
+    {
+      id: 'oncology',
+      description: 'Комплексные решения в онкологии',
+      tags: ['#онкология', '#радиотерапия', '#химиотерапия'],
+      businesses: ['radiotherapy', 'chemotherapy', 'immunotherapy', 'targetedTherapy', 'surgicalOncology', 'nuclearMedicine']
     }
   ];
 
@@ -32,7 +47,7 @@ const Categories = () => {
             {t('sections.productLibrary')}
           </h1>
           <p className="text-gray-600 text-lg">
-            Изучите нашу библиотеку продуктов по категориям. Здесь вы найдете подробную информацию о каждом направлении.
+            {t('sections.productLibraryDescription')}
           </p>
         </div>
 

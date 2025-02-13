@@ -10,15 +10,47 @@
   "sections": {
     "productLibrary": "Product Library",
     "distributorAssistance": "Distributor Assistance",
-    "feedback": "Feedback"
+    "feedback": "Feedback",
+    "productLibraryDescription": "Complete library of medical solutions by specialty"
   },
   "categories": {
-    "nss": "NSS",
-    "cardiosurgery": "Cardiosurgery",
-    "diabetes": "Diabetes"
+    "nss": "Neurosurgery",
+    "cardiosurgery": "Cardiac Surgery",
+    "diabetes": "Diabetes",
+    "orthopedics": "Orthopedics",
+    "oncology": "Oncology"
   },
   "businesses": {
-    "neuromodulation": "Neuromodulation"
+    "neuromodulation": "Neuromodulation",
+    "spinalSurgery": "Spinal Surgery",
+    "neuroendoscopy": "Neuroendoscopy",
+    "radiosurgery": "Radiosurgery",
+    "peripheralStimulation": "Peripheral Stimulation",
+    "intrathecalTherapy": "Intrathecal Therapy",
+    "cardiacSurgery": "Cardiac Surgery",
+    "interventionalCardiology": "Interventional Cardiology",
+    "electrophysiology": "Electrophysiology",
+    "structuralHeart": "Structural Heart",
+    "vascularSurgery": "Vascular Surgery",
+    "cardiacMonitoring": "Cardiac Monitoring",
+    "insulinPumps": "Insulin Pumps",
+    "glucoseMonitoring": "Glucose Monitoring",
+    "diabetesManagement": "Diabetes Management",
+    "insulinDelivery": "Insulin Delivery",
+    "diabetesEducation": "Diabetes Education",
+    "metabolicSurgery": "Metabolic Surgery",
+    "jointReplacement": "Joint Replacement",
+    "spineOrtho": "Spine Orthopedics",
+    "traumaSurgery": "Trauma Surgery",
+    "sportsOrtho": "Sports Orthopedics",
+    "pediatricOrtho": "Pediatric Orthopedics",
+    "arthroscopy": "Arthroscopy",
+    "radiotherapy": "Radiotherapy",
+    "chemotherapy": "Chemotherapy",
+    "immunotherapy": "Immunotherapy",
+    "targetedTherapy": "Targeted Therapy",
+    "surgicalOncology": "Surgical Oncology",
+    "nuclearMedicine": "Nuclear Medicine"
   },
   "therapies": {
     "scs": "SCS",

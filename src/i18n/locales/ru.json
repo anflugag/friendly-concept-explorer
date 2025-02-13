@@ -10,15 +10,47 @@
   "sections": {
     "productLibrary": "Библиотека продуктов",
     "distributorAssistance": "Помощь дистрибьютору",
-    "feedback": "Обратная связь"
+    "feedback": "Обратная связь",
+    "productLibraryDescription": "Полная библиотека медицинских решений по направлениям"
   },
   "categories": {
     "nss": "Нейрохирургия",
     "cardiosurgery": "Кардиохирургия",
-    "diabetes": "Диабет"
+    "diabetes": "Диабет",
+    "orthopedics": "Ортопедия",
+    "oncology": "Онкология"
   },
   "businesses": {
-    "neuromodulation": "Нейромодуляция"
+    "neuromodulation": "Нейромодуляция",
+    "spinalSurgery": "Спинальная хирургия",
+    "neuroendoscopy": "Нейроэндоскопия",
+    "radiosurgery": "Радиохирургия",
+    "peripheralStimulation": "Периферическая стимуляция",
+    "intrathecalTherapy": "Интратекальная терапия",
+    "cardiacSurgery": "Кардиохирургия",
+    "interventionalCardiology": "Интервенционная кардиология",
+    "electrophysiology": "Электрофизиология",
+    "structuralHeart": "Структурные заболевания сердца",
+    "vascularSurgery": "Сосудистая хирургия",
+    "cardiacMonitoring": "Мониторинг сердечной деятельности",
+    "insulinPumps": "Инсулиновые помпы",
+    "glucoseMonitoring": "Мониторинг глюкозы",
+    "diabetesManagement": "Управление диабетом",
+    "insulinDelivery": "Доставка инсулина",
+    "diabetesEducation": "Обучение по диабету",
+    "metabolicSurgery": "Метаболическая хирургия",
+    "jointReplacement": "Эндопротезирование",
+    "spineOrtho": "Вертебрология",
+    "traumaSurgery": "Травматология",
+    "sportsOrtho": "Спортивная ортопедия",
+    "pediatricOrtho": "Детская ортопедия",
+    "arthroscopy": "Артроскопия",
+    "radiotherapy": "Радиотерапия",
+    "chemotherapy": "Химиотерапия",
+    "immunotherapy": "Иммунотерапия",
+    "targetedTherapy": "Таргетная терапия",
+    "surgicalOncology": "Хирургическая онкология",
+    "nuclearMedicine": "Ядерная медицина"
   },
   "therapies": {
     "scs": "SCS",
