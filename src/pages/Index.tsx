@@ -51,7 +51,8 @@ const Index = () => {
             </div>
           </Link>
 
-          <section 
+          <Link 
+            to="/feedback"
             className="p-6 bg-white/80 backdrop-blur-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
             style={{
               background: 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)',
@@ -66,7 +67,7 @@ const Index = () => {
                 <p className="text-sm text-gray-600 mt-1">{t('sections.feedbackDescription')}</p>
               </div>
             </div>
-          </section>
+          </Link>
         </div>
       </main>
 
