@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import BottomNav from '../components/navigation/BottomNav';
 import LanguageSwitcher from '../components/language/LanguageSwitcher';
+import { Library, Users, MessageSquare } from 'lucide-react';
 import '../i18n/config';
 
 const Index = () => {
@@ -21,17 +22,34 @@ const Index = () => {
               background: 'linear-gradient(109.6deg, rgba(223,234,247,1) 11.2%, rgba(244,248,252,1) 91.1%)',
             }}
           >
-            <h2 className="text-2xl font-bold mb-4 text-[#151120]">{t('sections.productLibrary')}</h2>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white rounded-xl shadow-md">
+                <Library className="w-6 h-6 text-blue-500" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-[#151120]">{t('sections.productLibrary')}</h2>
+                <p className="text-sm text-gray-600 mt-1">{t('sections.productLibraryDescription')}</p>
+              </div>
+            </div>
           </Link>
 
-          <section 
+          <Link 
+            to="/distributor-assistance"
             className="p-6 bg-white/80 backdrop-blur-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
             style={{
               background: 'linear-gradient(to right, #ee9ca7, #ffdde1)',
             }}
           >
-            <h2 className="text-2xl font-bold mb-4 text-[#151120]">{t('sections.distributorAssistance')}</h2>
-          </section>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white rounded-xl shadow-md">
+                <Users className="w-6 h-6 text-pink-500" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-[#151120]">{t('sections.distributorAssistance')}</h2>
+                <p className="text-sm text-gray-600 mt-1">{t('sections.distributorAssistanceDescription')}</p>
+              </div>
+            </div>
+          </Link>
 
           <section 
             className="p-6 bg-white/80 backdrop-blur-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
@@ -39,7 +57,15 @@ const Index = () => {
               background: 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)',
             }}
           >
-            <h2 className="text-2xl font-bold mb-4 text-[#151120]">{t('sections.feedback')}</h2>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-white rounded-xl shadow-md">
+                <MessageSquare className="w-6 h-6 text-blue-500" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-[#151120]">{t('sections.feedback')}</h2>
+                <p className="text-sm text-gray-600 mt-1">{t('sections.feedbackDescription')}</p>
+              </div>
+            </div>
           </section>
         </div>
       </main>
