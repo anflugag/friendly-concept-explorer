@@ -56,7 +56,7 @@ const DistributorAssistance = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="grid gap-6">
+              <Accordion type="single" collapsible className="w-full">
                 {visitSteps.map((step, index) => (
                   <div key={step.id} className="relative">
                     {index !== visitSteps.length - 1 && (
@@ -89,7 +89,7 @@ const DistributorAssistance = () => {
                     </AccordionItem>
                   </div>
                 ))}
-              </div>
+              </Accordion>
             </CardContent>
           </Card>
 
