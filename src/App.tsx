@@ -11,6 +11,7 @@ import Therapy from "./pages/Therapy";
 import Product from "./pages/Product";
 import DistributorAssistance from "./pages/DistributorAssistance";
 import Feedback from "./pages/Feedback";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/category/:category/business/:business/therapy/:therapy" element={<Product />} />
           <Route path="/distributor-assistance" element={<DistributorAssistance />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
