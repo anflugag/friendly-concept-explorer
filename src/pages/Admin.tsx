@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
-import { Settings, Users, MessageSquare, Database } from 'lucide-react';
+import { Settings, Users, MessageSquare, Database, BarChart2, FolderTree } from 'lucide-react';
+import DashboardStats from '@/components/admin/DashboardStats';
+import FileUploader from '@/components/admin/FileUploader';
+import FileManager from '@/components/admin/FileManager';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -15,7 +18,6 @@ const Admin = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // В реальном приложении здесь должна быть безопасная аутентификация
     if (password === 'admin123') {
       setIsAuthenticated(true);
       toast({
@@ -76,55 +78,74 @@ const Admin = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="users" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="dashboard" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="dashboard" className="flex items-center gap-2">
+              <BarChart2 className="w-4 h-4" />
+              Dashboard
+            </TabsTrigger>
+            <TabsTrigger value="files" className="flex items-center gap-2">
+              <FolderTree className="w-4 h-4" />
+              Files
+            </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              Пользователи
+              Users
             </TabsTrigger>
             <TabsTrigger value="feedback" className="flex items-center gap-2">
               <MessageSquare className="w-4 h-4" />
-              Обратная связь
+              Feedback
             </TabsTrigger>
             <TabsTrigger value="data" className="flex items-center gap-2">
               <Database className="w-4 h-4" />
-              База данных
+              Data
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Settings className="w-4 h-4" />
-              Настройки
+              Settings
             </TabsTrigger>
           </TabsList>
 
+          <TabsContent value="dashboard" className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">Dashboard Overview</h2>
+            <div className="space-y-6">
+              <DashboardStats />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="files" className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-2xl font-bold mb-4">File Management</h2>
+            <div className="space-y-6">
+              <FileUploader />
+              <FileManager />
+            </div>
+          </TabsContent>
+
           <TabsContent value="users" className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Управление пользователями</h2>
+            <h2 className="text-2xl font-bold mb-4">User Management</h2>
             <div className="space-y-4">
-              {/* Здесь будет таблица пользователей */}
-              <p className="text-gray-600">Функционал находится в разработке</p>
+              <p className="text-gray-600">User management functionality coming soon...</p>
             </div>
           </TabsContent>
 
           <TabsContent value="feedback" className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Обратная связь</h2>
+            <h2 className="text-2xl font-bold mb-4">Feedback Management</h2>
             <div className="space-y-4">
-              {/* Здесь будут отображаться сообщения обратной связи */}
-              <p className="text-gray-600">Функционал находится в разработке</p>
+              <p className="text-gray-600">Feedback management functionality coming soon...</p>
             </div>
           </TabsContent>
 
           <TabsContent value="data" className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Управление данными</h2>
+            <h2 className="text-2xl font-bold mb-4">Data Management</h2>
             <div className="space-y-4">
-              {/* Здесь будет интерфейс управления данными */}
-              <p className="text-gray-600">Функционал находится в разработке</p>
+              <p className="text-gray-600">Data management functionality coming soon...</p>
             </div>
           </TabsContent>
 
           <TabsContent value="settings" className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Настройки системы</h2>
+            <h2 className="text-2xl font-bold mb-4">System Settings</h2>
             <div className="space-y-4">
-              {/* Здесь будут настройки системы */}
-              <p className="text-gray-600">Функционал находится в разработке</p>
+              <p className="text-gray-600">Settings functionality coming soon...</p>
             </div>
           </TabsContent>
         </Tabs>

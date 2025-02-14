@@ -9,7 +9,122 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      files: {
+        Row: {
+          created_at: string | null
+          folder_path: string
+          id: string
+          name: string
+          path: string
+          size: number
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          folder_path?: string
+          id?: string
+          name: string
+          path: string
+          size: number
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          folder_path?: string
+          id?: string
+          name?: string
+          path?: string
+          size?: number
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      folders: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+          parent_path: string | null
+          path: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+          parent_path?: string | null
+          path: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+          parent_path?: string | null
+          path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "folders_parent_path_fkey"
+            columns: ["parent_path"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["path"]
+          },
+        ]
+      }
+      statistics: {
+        Row: {
+          category: string
+          id: string
+          name: string
+          recorded_at: string | null
+          value: number
+        }
+        Insert: {
+          category: string
+          id?: string
+          name: string
+          recorded_at?: string | null
+          value: number
+        }
+        Update: {
+          category?: string
+          id?: string
+          name?: string
+          recorded_at?: string | null
+          value?: number
+        }
+        Relationships: []
+      }
+      translations: {
+        Row: {
+          created_at: string | null
+          id: string
+          key: string
+          language: string
+          updated_at: string | null
+          value: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          key: string
+          language: string
+          updated_at?: string | null
+          value: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          key?: string
+          language?: string
+          updated_at?: string | null
+          value?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
