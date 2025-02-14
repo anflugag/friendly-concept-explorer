@@ -13,30 +13,36 @@ export type Database = {
         Row: {
           created_at: string | null
           folder_path: string
+          hashtags: string[] | null
           id: string
           name: string
           path: string
           size: number
+          subtitle: string | null
           type: string
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           folder_path?: string
+          hashtags?: string[] | null
           id?: string
           name: string
           path: string
           size: number
+          subtitle?: string | null
           type: string
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           folder_path?: string
+          hashtags?: string[] | null
           id?: string
           name?: string
           path?: string
           size?: number
+          subtitle?: string | null
           type?: string
           updated_at?: string | null
         }
@@ -45,24 +51,30 @@ export type Database = {
       folders: {
         Row: {
           created_at: string | null
+          hashtags: string[] | null
           id: string
           name: string
           parent_path: string | null
           path: string
+          subtitle: string | null
         }
         Insert: {
           created_at?: string | null
+          hashtags?: string[] | null
           id?: string
           name: string
           parent_path?: string | null
           path: string
+          subtitle?: string | null
         }
         Update: {
           created_at?: string | null
+          hashtags?: string[] | null
           id?: string
           name?: string
           parent_path?: string | null
           path?: string
+          subtitle?: string | null
         }
         Relationships: [
           {
