@@ -1,14 +1,15 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
-import { Settings, Users, MessageSquare, Database, BarChart2, FolderTree } from 'lucide-react';
+import { Settings, Users, MessageSquare, Database, BarChart2, FolderTree, Folder, Plus } from 'lucide-react';
 import DashboardStats from '@/components/admin/DashboardStats';
 import FileUploader from '@/components/admin/FileUploader';
 import FileManager from '@/components/admin/FileManager';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [newFolderName, setNewFolderName] = useState('');
+  const [currentPath, setCurrentPath] = useState('/');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +36,44 @@ const Admin = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const createFolder = async () => {
+    if (!newFolderName.trim()) {
+      toast({
+        title: "Ошибка",
+        description: "Введите название папки",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const folderPath = currentPath === '/' 
+      ? `/${newFolderName}` 
+      : `${currentPath}/${newFolderName}`;
+
+    const { error } = await supabase
+      .from('folders')
+      .insert({
+        name: newFolderName,
+        path: folderPath,
+        parent_path: currentPath === '/' ? null : currentPath
+      });
+
+    if (error) {
+      toast({
+        title: "Ошибка",
+        description: "Не удалось создать папку",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    toast({
+      title: "Успех",
+      description: "Папка создана",
+    });
+    setNewFolderName('');
   };
 
   if (!isAuthenticated) {
@@ -82,6 +123,7 @@ const Admin = () => {
             variant="outline"
             onClick={() => {
               setIsAuthenticated(false);
+              setEmail('');
               setPassword('');
               navigate('/');
             }}
@@ -90,7 +132,7 @@ const Admin = () => {
           </Button>
         </div>
 
-        <Tabs defaultValue="dashboard" className="space-y-6">
+        <Tabs defaultValue="files" className="space-y-6">
           <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <BarChart2 className="w-4 h-4" />
@@ -118,18 +160,46 @@ const Admin = () => {
             </TabsTrigger>
           </TabsList>
 
+          <TabsContent value="files" className="bg-white rounded-lg shadow-lg p-6">
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">File Management</h2>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="flex items-center gap-2">
+                      <Plus className="w-4 h-4" />
+                      New Folder
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Create New Folder</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <Input
+                        value={newFolderName}
+                        onChange={(e) => setNewFolderName(e.target.value)}
+                        placeholder="Enter folder name"
+                      />
+                      <Button onClick={createFolder} className="w-full">
+                        Create Folder
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+              <FileUploader currentPath={currentPath} onUploadComplete={() => {}} />
+              <FileManager 
+                currentPath={currentPath} 
+                onPathChange={setCurrentPath} 
+              />
+            </div>
+          </TabsContent>
+
           <TabsContent value="dashboard" className="bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Dashboard Overview</h2>
             <div className="space-y-6">
               <DashboardStats />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="files" className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">File Management</h2>
-            <div className="space-y-6">
-              <FileUploader />
-              <FileManager />
             </div>
           </TabsContent>
 

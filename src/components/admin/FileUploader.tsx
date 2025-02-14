@@ -6,7 +6,12 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 
-const FileUploader = () => {
+interface FileUploaderProps {
+  currentPath: string;
+  onUploadComplete: () => void;
+}
+
+const FileUploader: React.FC<FileUploaderProps> = ({ currentPath, onUploadComplete }) => {
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
 
@@ -31,6 +36,7 @@ const FileUploader = () => {
             path: filePath,
             size: file.size,
             type: file.type,
+            folder_path: currentPath
           });
 
         if (dbError) throw dbError;
@@ -50,7 +56,8 @@ const FileUploader = () => {
     }
     
     setUploading(false);
-  }, [toast]);
+    onUploadComplete();
+  }, [currentPath, toast, onUploadComplete]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
