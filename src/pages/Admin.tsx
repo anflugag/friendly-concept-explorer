@@ -14,11 +14,13 @@ const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === 'admin123') {
+    // For demo purposes, using simple credentials
+    if (email === 'admin@example.com' && password === 'admin123') {
       setIsAuthenticated(true);
       toast({
         title: "Успешный вход",
@@ -27,7 +29,7 @@ const Admin = () => {
     } else {
       toast({
         title: "Ошибка входа",
-        description: "Неверный пароль",
+        description: "Неверные учетные данные",
         variant: "destructive",
       });
     }
@@ -39,9 +41,19 @@ const Admin = () => {
         <div className="w-full max-w-md space-y-6 bg-white rounded-lg shadow-xl p-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold">Вход в админ-панель</h1>
-            <p className="text-gray-600 mt-2">Введите пароль для доступа</p>
+            <p className="text-gray-600 mt-2">Введите учетные данные для доступа</p>
           </div>
           <form onSubmit={handleLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Введите email"
+                className="w-full"
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Input
                 type="password"
