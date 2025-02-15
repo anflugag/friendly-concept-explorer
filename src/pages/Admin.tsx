@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,9 @@ import { Settings, Users, MessageSquare, Database, BarChart2, FolderTree, Folder
 import DashboardStats from '@/components/admin/DashboardStats';
 import FileUploader from '@/components/admin/FileUploader';
 import FileManager from '@/components/admin/FileManager';
-import FolderTree as FolderTreeComponent from '@/components/admin/FolderTree';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import FolderTreeComponent from '@/components/admin/FolderTree';
 
 const Admin = () => {
   const navigate = useNavigate();
