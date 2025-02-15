@@ -2,7 +2,7 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Folder, File, Edit, Trash2 } from 'lucide-react';
 import { FileOrFolder } from './types';
 
@@ -64,15 +64,17 @@ const FileManagerList = ({
               <TableCell>{item.type || 'Folder'}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
-                  <DialogTrigger asChild>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => onEditClick(item)}
-                    >
-                      <Edit className="w-4 h-4" />
-                    </Button>
-                  </DialogTrigger>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onEditClick(item)}
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                    </DialogTrigger>
+                  </Dialog>
                   <Button
                     size="sm"
                     variant="destructive"
@@ -91,3 +93,4 @@ const FileManagerList = ({
 };
 
 export default FileManagerList;
+
