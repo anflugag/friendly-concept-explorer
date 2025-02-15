@@ -16,14 +16,15 @@ const Business = () => {
     oncology: ['radiotherapy', 'chemotherapy', 'immunotherapy', 'targetedTherapy', 'surgicalOncology', 'nuclearMedicine']
   };
 
-  const businesses = category ? businessesByCategory[category as keyof typeof businessesByCategory] : [];
+  // Добавляем безопасную проверку и значение по умолчанию
+  const businesses = category ? businessesByCategory[category as keyof typeof businessesByCategory] || [] : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] text-foreground pb-16">
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 animate-fade-in">
           <h1 className="text-3xl font-bold text-[#151120] mb-2">
-            {t(`categories.${category}`)}
+            {category ? t(`categories.${category}`) : 'Категория не найдена'}
           </h1>
           <p className="text-gray-600 text-lg">
             Выберите направление терапии
@@ -60,6 +61,11 @@ const Business = () => {
               </div>
             </Link>
           ))}
+          {businesses.length === 0 && (
+            <div className="text-center py-8 text-gray-600">
+              Направления для данной категории не найдены
+            </div>
+          )}
         </div>
       </main>
       <BottomNav />
