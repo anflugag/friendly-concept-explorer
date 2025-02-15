@@ -6,6 +6,7 @@ import { FileOrFolder, FileManagerProps } from './types';
 import FileManagerHeader from './FileManagerHeader';
 import FileManagerList from './FileManagerList';
 import EditItemDialog from './EditItemDialog';
+import ProductManager from './ProductManager';
 
 const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) => {
   const [items, setItems] = useState<FileOrFolder[]>([]);
@@ -169,6 +170,7 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
           onOpenChange={(open) => !open && setEditingItem(null)}
         />
       )}
+      <ProductManager folderPath={currentPath} />
     </div>
   );
 };

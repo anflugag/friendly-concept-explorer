@@ -86,6 +86,44 @@ export type Database = {
           },
         ]
       }
+      products: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          folder_path: string
+          id: string
+          image_url: string | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          folder_path: string
+          id?: string
+          image_url?: string | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          folder_path?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "products_folder_path_fkey"
+            columns: ["folder_path"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["path"]
+          },
+        ]
+      }
       statistics: {
         Row: {
           category: string

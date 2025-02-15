@@ -1,4 +1,5 @@
 
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,12 +11,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { supabase } from "@/integrations/supabase/client";
 import BottomNav from '../components/navigation/BottomNav';
 import { Folder } from 'lucide-react';
+import { Product } from '../components/admin/types';
 
-const Product = () => {
+const ProductPage = () => {
   const { category, business, therapy } = useParams();
   const { t } = useTranslation();
+  const [products, setProducts] = useState<Product[]>([]);
 
   const fileCategories = [
     'instructions',
@@ -27,56 +31,67 @@ const Product = () => {
     'components'
   ];
 
-  // This would come from an API in a real app
-  const mockFiles = {
-    instructions: [
-      { id: 1, name: 'User Manual', description: 'Complete user guide' },
-      { id: 2, name: 'Quick Start Guide', description: 'Basic setup instructions' }
-    ],
-    registration: [
-      { id: 3, name: 'CE Certificate', description: 'European certification' },
-      { id: 4, name: 'FDA Approval', description: 'US market approval' }
-    ]
-  };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const currentPath = `/${category}${business ? `/${business}` : ''}${therapy ? `/${therapy}` : ''}`;
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('folder_path', currentPath);
+
+      if (!error && data) {
+        setProducts(data);
+      }
+    };
+
+    fetchProducts();
+  }, [category, business, therapy]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] text-foreground pb-16">
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6 animate-fade-in">
-          {fileCategories.map((category) => (
-            <Sheet key={category}>
-              <SheetTrigger className="w-full">
-                <Card className="w-full hover:shadow-lg transition-shadow duration-300">
-                  <CardHeader className="flex flex-row items-center space-x-4">
-                    <Folder className="w-6 h-6" />
-                    <CardTitle>{t(`fileCategories.${category}`)}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">
-                      {mockFiles[category]?.length || 0} files
-                    </p>
-                  </CardContent>
-                </Card>
-              </SheetTrigger>
-              <SheetContent side="bottom" className="h-[80vh]">
-                <SheetHeader>
-                  <SheetTitle>{t(`fileCategories.${category}`)}</SheetTitle>
-                  <SheetDescription>
-                    View and download files from this category
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="mt-6 space-y-4">
-                  {mockFiles[category]?.map((file) => (
-                    <Card key={file.id} className="cursor-pointer hover:bg-accent transition-colors">
-                      <CardHeader>
-                        <CardTitle className="text-lg">{file.name}</CardTitle>
-                        <p className="text-sm text-gray-500">{file.description}</p>
-                      </CardHeader>
-                    </Card>
+          {products.map((product) => (
+            <Card key={product.id} className="overflow-hidden">
+              {product.image_url && (
+                <img
+                  src={product.image_url}
+                  alt={product.name}
+                  className="w-full h-48 object-cover"
+                />
+              )}
+              <CardHeader>
+                <CardTitle>{product.name}</CardTitle>
+                {product.description && (
+                  <p className="text-sm text-gray-600">{product.description}</p>
+                )}
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4">
+                  {fileCategories.map((category) => (
+                    <Sheet key={category}>
+                      <SheetTrigger className="w-full">
+                        <Card className="w-full hover:shadow-lg transition-shadow duration-300">
+                          <CardHeader className="flex flex-row items-center space-x-4">
+                            <Folder className="w-6 h-6" />
+                            <CardTitle>{t(`fileCategories.${category}`)}</CardTitle>
+                          </CardHeader>
+                        </Card>
+                      </SheetTrigger>
+                      <SheetContent side="bottom" className="h-[80vh]">
+                        <SheetHeader>
+                          <SheetTitle>{t(`fileCategories.${category}`)}</SheetTitle>
+                          <SheetDescription>
+                            View and download files from this category
+                          </SheetDescription>
+                        </SheetHeader>
+                        {/* Files list will be implemented in the next iteration */}
+                      </SheetContent>
+                    </Sheet>
                   ))}
                 </div>
-              </SheetContent>
-            </Sheet>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </main>
@@ -85,4 +100,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default ProductPage;
