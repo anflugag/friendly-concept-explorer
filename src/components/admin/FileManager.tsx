@@ -1,32 +1,15 @@
 
 import { useState, useEffect } from 'react';
-import { Folder, File, Trash2, Edit, Hash, Plus, X, ChevronLeft } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-
-interface FileOrFolder {
-  id: string;
-  name: string;
-  type?: string;
-  size?: number;
-  path: string;
-  subtitle?: string | null;
-  hashtags?: string[] | null;
-}
-
-interface FileManagerProps {
-  currentPath: string;
-  onPathChange: (path: string) => void;
-}
+import { FileOrFolder, FileManagerProps } from './types';
+import FileManagerHeader from './FileManagerHeader';
+import FileManagerList from './FileManagerList';
+import EditItemDialog from './EditItemDialog';
 
 const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) => {
   const [items, setItems] = useState<FileOrFolder[]>([]);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingItem, setEditingItem] = useState<FileOrFolder | null>(null);
   const [newName, setNewName] = useState('');
   const [newSubtitle, setNewSubtitle] = useState('');
   const [newHashtag, setNewHashtag] = useState('');
@@ -38,7 +21,6 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
   }, [currentPath]);
 
   const fetchItems = async () => {
-    // Fetch folders
     const { data: folders, error: foldersError } = await supabase
       .from('folders')
       .select('*')
@@ -54,7 +36,6 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
       return;
     }
 
-    // Fetch files
     const { data: files, error: filesError } = await supabase
       .from('files')
       .select('*')
@@ -75,15 +56,16 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
   };
 
   const handleMetadataEdit = (item: FileOrFolder) => {
-    setEditingId(item.id);
+    setEditingItem(item);
     setNewName(item.name);
     setNewSubtitle(item.subtitle || '');
     setEditingHashtags(item.hashtags || []);
   };
 
-  const handleSave = async (id: string, isFolder: boolean) => {
-    if (!newName.trim()) return;
+  const handleSave = async () => {
+    if (!editingItem || !newName.trim()) return;
 
+    const isFolder = !editingItem.type;
     const table = isFolder ? 'folders' : 'files';
     const { error } = await supabase
       .from(table)
@@ -92,7 +74,7 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
         subtitle: newSubtitle || null,
         hashtags: editingHashtags,
       })
-      .eq('id', id);
+      .eq('id', editingItem.id);
 
     if (error) {
       toast({
@@ -103,7 +85,7 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
       return;
     }
 
-    setEditingId(null);
+    setEditingItem(null);
     setNewName('');
     setNewSubtitle('');
     setEditingHashtags([]);
@@ -153,167 +135,40 @@ const FileManager: React.FC<FileManagerProps> = ({ currentPath, onPathChange }) 
     });
   };
 
-  const handleFolderClick = (path: string) => {
-    onPathChange(path);
-  };
-
   const handleBackClick = () => {
     if (currentPath === '/') return;
     const parentPath = currentPath.substring(0, currentPath.lastIndexOf('/'));
     onPathChange(parentPath || '/');
   };
 
-  const addHashtag = () => {
-    if (newHashtag && !editingHashtags.includes(newHashtag)) {
-      setEditingHashtags([...editingHashtags, newHashtag]);
-      setNewHashtag('');
-    }
-  };
-
-  const removeHashtag = (tag: string) => {
-    setEditingHashtags(editingHashtags.filter(t => t !== tag));
-  };
-
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleBackClick}
-          disabled={currentPath === '/'}
-        >
-          <ChevronLeft className="w-4 h-4" />
-          Back
-        </Button>
-        <span className="text-sm text-gray-500">Current path: {currentPath}</span>
-      </div>
-
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name & Metadata</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {items.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>
-                  <div className="space-y-2">
-                    <div 
-                      className="flex items-center gap-2 cursor-pointer"
-                      onClick={() => item.type ? null : handleFolderClick(item.path)}
-                    >
-                      {item.type ? (
-                        <File className="w-4 h-4" />
-                      ) : (
-                        <Folder className="w-4 h-4" />
-                      )}
-                      <span className="font-medium">{item.name}</span>
-                    </div>
-                    {item.subtitle && (
-                      <p className="text-sm text-gray-500">{item.subtitle}</p>
-                    )}
-                    {item.hashtags && item.hashtags.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {item.hashtags.map(tag => (
-                          <Badge key={tag} variant="secondary">
-                            #{tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>{item.size ? `${Math.round(item.size / 1024)} KB` : '-'}</TableCell>
-                <TableCell>{item.type || 'Folder'}</TableCell>
-                <TableCell>
-                  <div className="flex gap-2">
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleMetadataEdit(item)}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Edit {item.type ? 'File' : 'Folder'} Details</DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4 py-4">
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium">Name</label>
-                            <Input
-                              value={newName}
-                              onChange={(e) => setNewName(e.target.value)}
-                              placeholder="Enter name"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium">Subtitle</label>
-                            <Input
-                              value={newSubtitle}
-                              onChange={(e) => setNewSubtitle(e.target.value)}
-                              placeholder="Enter subtitle"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-sm font-medium">Hashtags</label>
-                            <div className="flex flex-wrap gap-1 mb-2">
-                              {editingHashtags.map(tag => (
-                                <Badge key={tag} variant="secondary">
-                                  #{tag}
-                                  <button
-                                    onClick={() => removeHashtag(tag)}
-                                    className="ml-1 hover:text-destructive"
-                                  >
-                                    <X className="w-3 h-3" />
-                                  </button>
-                                </Badge>
-                              ))}
-                            </div>
-                            <div className="flex gap-2">
-                              <Input
-                                value={newHashtag}
-                                onChange={(e) => setNewHashtag(e.target.value)}
-                                placeholder="Add hashtag"
-                              />
-                              <Button size="sm" onClick={addHashtag}>
-                                <Plus className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="flex justify-end gap-2 mt-4">
-                            <Button
-                              onClick={() => handleSave(item.id, !item.type)}
-                            >
-                              Save Changes
-                            </Button>
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDelete(item.id, item.path, !item.type)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <FileManagerHeader 
+        currentPath={currentPath}
+        onBackClick={handleBackClick}
+      />
+      <FileManagerList
+        items={items}
+        onFolderClick={onPathChange}
+        onEditClick={handleMetadataEdit}
+        onDeleteClick={handleDelete}
+      />
+      {editingItem && (
+        <EditItemDialog
+          item={editingItem}
+          newName={newName}
+          setNewName={setNewName}
+          newSubtitle={newSubtitle}
+          setNewSubtitle={setNewSubtitle}
+          newHashtag={newHashtag}
+          setNewHashtag={setNewHashtag}
+          editingHashtags={editingHashtags}
+          setEditingHashtags={setEditingHashtags}
+          onSave={handleSave}
+          open={!!editingItem}
+          onOpenChange={(open) => !open && setEditingItem(null)}
+        />
+      )}
     </div>
   );
 };
