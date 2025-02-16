@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ChevronRight, Folder, FileText, ArrowLeft, Package } from 'lucide-react';
@@ -47,7 +46,6 @@ const Library = () => {
 
   useEffect(() => {
     const loadContent = async () => {
-      // Загрузка папок
       const { data: foldersData } = await supabase
         .from('folders')
         .select('*')
@@ -58,7 +56,6 @@ const Library = () => {
         setFolders(foldersData);
       }
 
-      // Загрузка файлов
       const { data: filesData } = await supabase
         .from('files')
         .select('*')
@@ -69,7 +66,6 @@ const Library = () => {
         setFiles(filesData);
       }
 
-      // Загрузка продуктов
       const { data: productsData } = await supabase
         .from('products')
         .select('*')
@@ -80,7 +76,6 @@ const Library = () => {
         setProducts(productsData);
       }
 
-      // Формирование хлебных крошек
       const pathParts = path.split('/').filter(Boolean);
       const breadcrumbsData = await Promise.all(
         pathParts.map(async (_, index) => {
@@ -165,7 +160,8 @@ const Library = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="flex items-center p-4 bg-white/90 rounded-lg shadow"
+              onClick={() => navigate(`/product${path}`)}
+              className="flex items-center p-4 bg-white/90 rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
             >
               {product.image_url ? (
                 <img 
@@ -182,6 +178,7 @@ const Library = () => {
                   <p className="text-sm text-gray-500">{product.description}</p>
                 )}
               </div>
+              <ChevronRight className="w-4 h-4 text-gray-400" />
             </div>
           ))}
 

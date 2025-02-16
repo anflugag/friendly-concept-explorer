@@ -9,6 +9,7 @@ import Admin from './pages/Admin';
 import NotFound from './pages/NotFound';
 import Feedback from './pages/Feedback';
 import DistributorAssistance from './pages/DistributorAssistance';
+import Product from './pages/Product';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/library/*" element={<Library />} />
+          <Route path="/product/*" element={<Product />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/distributor-assistance" element={<DistributorAssistance />} />
