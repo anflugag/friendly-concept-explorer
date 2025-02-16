@@ -86,6 +86,88 @@ export type Database = {
           },
         ]
       }
+      product_files: {
+        Row: {
+          category: string
+          created_at: string
+          display_order: number
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id: string
+          preview_url: string | null
+          product_id: string | null
+          searchable_text: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          display_order: number
+          file_name: string
+          file_path: string
+          file_size: number
+          file_type: string
+          id?: string
+          preview_url?: string | null
+          product_id?: string | null
+          searchable_text?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          display_order?: number
+          file_name?: string
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          id?: string
+          preview_url?: string | null
+          product_id?: string | null
+          searchable_text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_files_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_images: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_path: string
+          product_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          display_order: number
+          id?: string
+          image_path: string
+          product_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_path?: string
+          product_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           created_at: string | null
@@ -180,7 +262,52 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      gtrgm_compress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: {
+          "": unknown
+        }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: {
+          "": unknown
+        }
+        Returns: unknown
+      }
+      set_limit: {
+        Args: {
+          "": number
+        }
+        Returns: number
+      }
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: {
+          "": string
+        }
+        Returns: string[]
+      }
     }
     Enums: {
       [_ in never]: never
