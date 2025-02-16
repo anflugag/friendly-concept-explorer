@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronRight, Folder, FileText, ArrowLeft } from 'lucide-react';
+import { ChevronRight, Folder, FileText, ArrowLeft, Package } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import BottomNav from '../components/navigation/BottomNav';
 import { Button } from '@/components/ui/button';
@@ -29,11 +29,19 @@ interface FileItem {
   subtitle: string | null;
 }
 
+interface ProductItem {
+  id: string;
+  name: string;
+  description: string | null;
+  image_url: string | null;
+}
+
 const Library = () => {
   const { "*": currentPath } = useParams();
   const navigate = useNavigate();
   const [folders, setFolders] = useState<FolderItem[]>([]);
   const [files, setFiles] = useState<FileItem[]>([]);
+  const [products, setProducts] = useState<ProductItem[]>([]);
   const [breadcrumbs, setBreadcrumbs] = useState<{ name: string; path: string }[]>([]);
   const path = `/${currentPath || ''}`;
 
@@ -59,6 +67,17 @@ const Library = () => {
 
       if (filesData) {
         setFiles(filesData);
+      }
+
+      // Загрузка продуктов
+      const { data: productsData } = await supabase
+        .from('products')
+        .select('*')
+        .eq('folder_path', path)
+        .order('name');
+
+      if (productsData) {
+        setProducts(productsData);
       }
 
       // Формирование хлебных крошек
@@ -114,7 +133,7 @@ const Library = () => {
                   <BreadcrumbLink 
                     asChild 
                     className="hover:text-blue-500 cursor-pointer"
-                    onClick={() => navigate(crumb.path)}
+                    onClick={() => navigate(`/library${crumb.path}`)}
                   >
                     <span>{crumb.name}</span>
                   </BreadcrumbLink>
@@ -143,6 +162,29 @@ const Library = () => {
             </div>
           ))}
 
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="flex items-center p-4 bg-white/90 rounded-lg shadow"
+            >
+              {product.image_url ? (
+                <img 
+                  src={product.image_url} 
+                  alt={product.name}
+                  className="w-12 h-12 object-cover rounded-md mr-3"
+                />
+              ) : (
+                <Package className="w-5 h-5 text-purple-500 mr-3" />
+              )}
+              <div className="flex-1">
+                <h3 className="font-medium text-gray-900">{product.name}</h3>
+                {product.description && (
+                  <p className="text-sm text-gray-500">{product.description}</p>
+                )}
+              </div>
+            </div>
+          ))}
+
           {files.map((file) => (
             <div
               key={file.id}
@@ -161,7 +203,7 @@ const Library = () => {
             </div>
           ))}
 
-          {folders.length === 0 && files.length === 0 && (
+          {folders.length === 0 && files.length === 0 && products.length === 0 && (
             <div className="text-center py-8 text-gray-500">
               Эта папка пуста
             </div>
