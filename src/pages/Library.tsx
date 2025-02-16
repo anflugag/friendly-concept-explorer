@@ -1,203 +1,50 @@
-import { useEffect, useState } from 'react';
+
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronRight, Folder, FileText, ArrowLeft, Package } from 'lucide-react';
-import { supabase } from "@/integrations/supabase/client";
+import { useLibraryContent } from '@/hooks/useLibraryContent';
 import BottomNav from '../components/navigation/BottomNav';
-import { Button } from '@/components/ui/button';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-
-interface FolderItem {
-  id: string;
-  name: string;
-  path: string;
-  subtitle: string | null;
-}
-
-interface FileItem {
-  id: string;
-  name: string;
-  path: string;
-  type: string;
-  size: number;
-  subtitle: string | null;
-}
-
-interface ProductItem {
-  id: string;
-  name: string;
-  description: string | null;
-  image_url: string | null;
-}
+import FolderItem from '@/components/library/FolderItem';
+import FileItem from '@/components/library/FileItem';
+import ProductItem from '@/components/library/ProductItem';
+import LibraryBreadcrumbs from '@/components/library/LibraryBreadcrumbs';
 
 const Library = () => {
   const { "*": currentPath } = useParams();
   const navigate = useNavigate();
-  const [folders, setFolders] = useState<FolderItem[]>([]);
-  const [files, setFiles] = useState<FileItem[]>([]);
-  const [products, setProducts] = useState<ProductItem[]>([]);
-  const [breadcrumbs, setBreadcrumbs] = useState<{ name: string; path: string }[]>([]);
   const path = `/${currentPath || ''}`;
-
-  useEffect(() => {
-    const loadContent = async () => {
-      const { data: foldersData } = await supabase
-        .from('folders')
-        .select('*')
-        .eq('parent_path', path)
-        .order('name');
-
-      if (foldersData) {
-        setFolders(foldersData);
-      }
-
-      const { data: filesData } = await supabase
-        .from('files')
-        .select('*')
-        .eq('folder_path', path)
-        .order('name');
-
-      if (filesData) {
-        setFiles(filesData);
-      }
-
-      const { data: productsData } = await supabase
-        .from('products')
-        .select('*')
-        .eq('folder_path', path)
-        .order('name');
-
-      if (productsData) {
-        setProducts(productsData);
-      }
-
-      const pathParts = path.split('/').filter(Boolean);
-      const breadcrumbsData = await Promise.all(
-        pathParts.map(async (_, index) => {
-          const currentPathSegment = '/' + pathParts.slice(0, index + 1).join('/');
-          const { data } = await supabase
-            .from('folders')
-            .select('name')
-            .eq('path', currentPathSegment)
-            .maybeSingle();
-          
-          return {
-            name: data?.name || pathParts[index],
-            path: currentPathSegment
-          };
-        })
-      );
-
-      setBreadcrumbs([{ name: 'Root', path: '/' }, ...breadcrumbsData.filter(crumb => crumb.name)]);
-    };
-
-    loadContent();
-  }, [path]);
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+  const { folders, files, products, breadcrumbs } = useLibraryContent(path);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fdfcfb] to-[#e2d1c3] text-foreground pb-16">
       <main className="container mx-auto px-4 py-8">
-        <div className="mb-6 flex items-center gap-4">
-          {path !== '/' && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => navigate(-1)}
-              className="mr-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          )}
-          <Breadcrumb>
-            <BreadcrumbList>
-              {breadcrumbs.map((crumb, index) => (
-                <BreadcrumbItem key={crumb.path}>
-                  <BreadcrumbLink 
-                    asChild 
-                    className="hover:text-blue-500 cursor-pointer"
-                    onClick={() => navigate(`/library${crumb.path}`)}
-                  >
-                    <span>{crumb.name}</span>
-                  </BreadcrumbLink>
-                  {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                </BreadcrumbItem>
-              ))}
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
+        <LibraryBreadcrumbs 
+          path={path}
+          breadcrumbs={breadcrumbs}
+          onNavigate={navigate}
+          onBack={() => navigate(-1)}
+        />
 
         <div className="grid gap-4 animate-fade-in">
           {folders.map((folder) => (
-            <div
+            <FolderItem
               key={folder.id}
+              {...folder}
               onClick={() => navigate(`/library${folder.path}`)}
-              className="flex items-center p-4 bg-white/90 rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
-            >
-              <Folder className="w-5 h-5 text-blue-500 mr-3" />
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-900">{folder.name}</h3>
-                {folder.subtitle && (
-                  <p className="text-sm text-gray-500">{folder.subtitle}</p>
-                )}
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-            </div>
+            />
           ))}
 
           {products.map((product) => (
-            <div
+            <ProductItem
               key={product.id}
+              {...product}
               onClick={() => navigate(`/product${path}`)}
-              className="flex items-center p-4 bg-white/90 rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
-            >
-              {product.image_url ? (
-                <img 
-                  src={product.image_url} 
-                  alt={product.name}
-                  className="w-12 h-12 object-cover rounded-md mr-3"
-                />
-              ) : (
-                <Package className="w-5 h-5 text-purple-500 mr-3" />
-              )}
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-900">{product.name}</h3>
-                {product.description && (
-                  <p className="text-sm text-gray-500">{product.description}</p>
-                )}
-              </div>
-              <ChevronRight className="w-4 h-4 text-gray-400" />
-            </div>
+            />
           ))}
 
           {files.map((file) => (
-            <div
+            <FileItem
               key={file.id}
-              className="flex items-center p-4 bg-white/90 rounded-lg shadow"
-            >
-              <FileText className="w-5 h-5 text-gray-500 mr-3" />
-              <div className="flex-1">
-                <h3 className="font-medium text-gray-900">{file.name}</h3>
-                {file.subtitle && (
-                  <p className="text-sm text-gray-500">{file.subtitle}</p>
-                )}
-                <p className="text-xs text-gray-400">
-                  {formatFileSize(file.size)}
-                </p>
-              </div>
-            </div>
+              {...file}
+            />
           ))}
 
           {folders.length === 0 && files.length === 0 && products.length === 0 && (
