@@ -70,7 +70,7 @@ const Library = () => {
             .from('folders')
             .select('name')
             .eq('path', currentPathSegment)
-            .single();
+            .maybeSingle();
           
           return {
             name: data?.name || pathParts[index],
@@ -79,7 +79,7 @@ const Library = () => {
         })
       );
 
-      setBreadcrumbs([{ name: 'Root', path: '/' }, ...breadcrumbsData]);
+      setBreadcrumbs([{ name: 'Root', path: '/' }, ...breadcrumbsData.filter(crumb => crumb.name)]);
     };
 
     loadContent();
@@ -129,7 +129,7 @@ const Library = () => {
           {folders.map((folder) => (
             <div
               key={folder.id}
-              onClick={() => navigate(folder.path)}
+              onClick={() => navigate(`/library${folder.path}`)}
               className="flex items-center p-4 bg-white/90 rounded-lg shadow hover:shadow-md transition-all cursor-pointer"
             >
               <Folder className="w-5 h-5 text-blue-500 mr-3" />
