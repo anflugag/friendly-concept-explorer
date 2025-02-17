@@ -55,12 +55,10 @@ const FileViewer = ({
 
   const handleShare = async () => {
     try {
-      const { data: { publicUrl }, error } = await supabase
+      const { data: { publicUrl } } = supabase
         .storage
         .from('admin-files')
         .getPublicUrl(filePath);
-
-      if (error) throw error;
 
       await navigator.clipboard.writeText(publicUrl);
       toast({
@@ -77,10 +75,15 @@ const FileViewer = ({
   };
 
   const renderFilePreview = () => {
+    const publicUrl = supabase.storage
+      .from('admin-files')
+      .getPublicUrl(filePath)
+      .data.publicUrl;
+
     if (fileType.startsWith('image/')) {
       return (
         <img 
-          src={`${supabase.storage.from('admin-files').getPublicUrl(filePath).data.publicUrl}`}
+          src={publicUrl}
           alt={fileName}
           className="max-h-[80vh] max-w-full object-contain mx-auto"
         />
@@ -90,7 +93,7 @@ const FileViewer = ({
     if (fileType === 'application/pdf') {
       return (
         <iframe
-          src={`${supabase.storage.from('admin-files').getPublicUrl(filePath).data.publicUrl}`}
+          src={publicUrl}
           className="w-full h-[80vh]"
           title={fileName}
         />
