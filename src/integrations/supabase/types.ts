@@ -97,6 +97,7 @@ export type Database = {
           file_size: number
           file_type: string
           id: string
+          is_favorite: boolean | null
           preview_url: string | null
           product_id: string | null
           searchable_text: string | null
@@ -111,6 +112,7 @@ export type Database = {
           file_size: number
           file_type: string
           id?: string
+          is_favorite?: boolean | null
           preview_url?: string | null
           product_id?: string | null
           searchable_text?: string | null
@@ -125,6 +127,7 @@ export type Database = {
           file_size?: number
           file_type?: string
           id?: string
+          is_favorite?: boolean | null
           preview_url?: string | null
           product_id?: string | null
           searchable_text?: string | null
