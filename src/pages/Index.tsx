@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import BottomNav from '../components/navigation/BottomNav';
 import LanguageSwitcher from '../components/language/LanguageSwitcher';
 import { Library, Users, MessageSquare } from 'lucide-react';
+import SearchBar from '../components/search/SearchBar';
 import '../i18n/config';
 
 const Index = () => {
@@ -14,7 +15,15 @@ const Index = () => {
       <LanguageSwitcher />
       
       <main className="container mx-auto px-4 py-8">
-        <div className="grid gap-6 animate-fade-in">
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold mb-2">Привет!</h1>
+          <h2 className="text-2xl font-medium text-gray-700 mb-6">
+            Добро пожаловать в библиотеку.
+          </h2>
+          <SearchBar />
+        </div>
+
+        <div className="grid gap-6 animate-fade-in mt-8">
           <Link 
             to="/library"
             className="p-6 bg-white/80 backdrop-blur-lg rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
