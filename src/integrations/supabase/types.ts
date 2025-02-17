@@ -90,6 +90,7 @@ export type Database = {
         Row: {
           category: string
           created_at: string
+          description: string | null
           display_order: number
           file_name: string
           file_path: string
@@ -103,6 +104,7 @@ export type Database = {
         Insert: {
           category: string
           created_at?: string
+          description?: string | null
           display_order: number
           file_name: string
           file_path: string
@@ -116,6 +118,7 @@ export type Database = {
         Update: {
           category?: string
           created_at?: string
+          description?: string | null
           display_order?: number
           file_name?: string
           file_path?: string
@@ -161,6 +164,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "product_images_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_youtube_videos: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          product_id: string | null
+          thumbnail_url: string | null
+          title: string
+          video_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          display_order: number
+          id?: string
+          product_id?: string | null
+          thumbnail_url?: string | null
+          title: string
+          video_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          product_id?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_youtube_videos_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
